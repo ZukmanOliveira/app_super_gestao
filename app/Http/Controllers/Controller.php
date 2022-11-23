@@ -18,12 +18,12 @@ class Controller extends BaseController
 
     public function principal()
     {
-        return view('sobre-nos');
+        return view('principal');
     }
 
     public function sobreNos()
     {
-        return view('principal');
+        return view('sobreNos');
     }
 }
 
