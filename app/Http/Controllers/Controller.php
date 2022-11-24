@@ -18,7 +18,7 @@ class Controller extends BaseController
 
     public function principal()
     {
-        return view('principal');
+        return view('site.principal');
     }
 
     public function sobreNos()
