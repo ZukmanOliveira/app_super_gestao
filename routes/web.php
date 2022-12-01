@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\Contato;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\SobreNos;
+use App\Http\Controllers\SobreNosController;
 use App\Http\Controllers\TesteController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\ContatoController;
+use App\Http\Controllers\PrincipalController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,11 +18,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-
-Route::get('/',[Controller::class,'principal'])->name('principal');
-Route::get('sobre-nos',[SobreNosController::class,'sobreNos'])->name('sobreNos');
-Route::get('contato',[ContatoController::class,'contato'])->name('contato');
+Route::get('/',[Controller::class,'principal'])->name('site.index');
+Route::get('sobre-nos',[SobreNosController::class,'sobreNos'])->name('site.sobrenos');
+Route::get('contato',[ContatoController::class,'contato'])->name('site.contato');
 Route::get('/login', function(){return'Login';});
 
 Route::prefix('/app')->group(function(){
