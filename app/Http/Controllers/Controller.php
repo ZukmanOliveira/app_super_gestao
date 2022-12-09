@@ -11,9 +11,5 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     
-    public function principal()
-    {
-        return view('site.principal');
-    }
 }
 

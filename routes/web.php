@@ -18,10 +18,10 @@ use App\Http\Controllers\PrincipalController;
 |
 */
 
-Route::get('/',[Controller::class,'principal'])->name('site.index');
+Route::get('/',[PrincipalController::class,'principal'])->name('site.index');
 Route::get('/sobre-nos',[SobreNosController::class,'sobreNos'])->name('site.sobrenos');
 Route::post('/contato',[ContatoController::class,'contato'])->name('site.contato');
-Route::get('/contato',[ContatoController::class,'contato'])->name('site.contato');
+Route::get('/contato',[ContatoController::class,'contato2'])->name('site.contato');
 Route::get('/login', function(){return'Login';});
 
 Route::prefix('/app')->group(function(){
