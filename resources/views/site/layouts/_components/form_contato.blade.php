@@ -9,7 +9,7 @@
  <input name="email" type="text" placeholder="E-mail" class="{{ $classe }}">
  <br>
 <select name="motivo_cotato" class="{{ $classe }}">
-    <option value="">Qual o motivo do contato?</option>
+    <option value="0">Qual o motivo do contato?</option>
     <option value="1">Dúvida</option>
     <option value="2">Elogio</option>
     <option value="3">Reclamação</option>
