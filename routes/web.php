@@ -6,7 +6,10 @@ use App\Http\Controllers\SobreNosController;
 use App\Http\Controllers\TesteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContatoController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PrincipalController;
+use App\Http\Middleware\LogAcessoMiddleware;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,12 +22,16 @@ use App\Http\Controllers\PrincipalController;
 */
 
 Route::get('/',[PrincipalController::class,'principal'])->name('site.index');
+
 Route::get('/sobre-nos',[SobreNosController::class,'sobreNos'])->name('site.sobrenos');
 Route::post('/contato',[ContatoController::class,'store'])->name('site.store');
 Route::get('/contato',[ContatoController::class,'create'])->name('site.create');
-Route::get('/login', function(){return'Login';});
 
-Route::prefix('/app')->group(function(){
+Route::get('/login',[LoginController::class,'create'])->name('login.create');
+Route::post('/login',[LoginController::class,'store'])->name('login.store');
+
+Route::middleware('autenticacao')->prefix('/app')->group(function(){
+
     Route::get('/',[Controller::class,'principal']);
     Route::get('sobre-nos',[Controller::class,'sobreNos']);
     Route::get('contato',[Controller::class,'contato']);
