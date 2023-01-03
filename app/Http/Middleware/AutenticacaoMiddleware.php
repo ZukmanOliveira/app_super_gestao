@@ -16,7 +16,16 @@ class AutenticacaoMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        
+
         return $next($request);
+     
+        session_start();
+        
+        if(isset($_SESSION['email']) && $_SESSION['email'] != ''){  
+            return $next($request);
+            
+        }else{
+            return redirect()->route('login.create', ['erro' => 2]);
+        }   
     }
 }

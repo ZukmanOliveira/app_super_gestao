@@ -12,7 +12,7 @@
                 <form action="{{route('login.store')}}" method="post">
                     @csrf
                     <input name="login" type="text" value="{{old('login')}}" placeholder="Login" class="borda-preta">
-                        {{$errors->has('login')}} {{$errors->first('login')}}
+                        {{$errors->has('login') ? $errors->first('login'):''}}
                     <input name="password" type="password" value="{{old('password')}}"placeholder="Password" class="borda-preta">
                         {{$errors->has('password') ? $errors->first('password'):''}}
                     <button type="submit" class="">Acessa</button>

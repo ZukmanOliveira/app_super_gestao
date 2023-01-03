@@ -21,9 +21,6 @@ class LogAcessoMiddleware
         $ip = $request->server->get('SERVER_NAME');
         
         $rota = $request->server->get('PHP_SELF');
-        
-
-
 
         LogAcesso::create(["log"=> "IP $ip  yxz requisitou a rota $rota abcd"]);
         
@@ -31,7 +28,6 @@ class LogAcessoMiddleware
         $resposta = $next($request);
 
         return $resposta;
-        
     
     }
 }

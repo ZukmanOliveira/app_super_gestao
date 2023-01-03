@@ -19,10 +19,10 @@ class Controller extends BaseController
         $this -> middleware(LogAcessoMiddleware::class);
         $this -> middleware(AutenticacaoMiddleware::class);
     }
-    public function SobreNos(){
+    public function cliente(){
         return "Middleware testado com sucesso";
     }
-    public function principal(){
+    public function fornecedores(){
         return view('site.sobre-nos');
     }
 }
