@@ -15,9 +15,13 @@
     </div>
 
     <div class="informação-pagina">
-
+        
+        <h4>produtos</h4>
+        <br>
+            <div>Nome: {{$produto_detalhe->item->nome ?? '' }}</div>
+        <br>
         <div style="width: 30%; margin-left: auto; margin-right: auto;"> 
-            @component('app.produtos._components.form_create_edit',['produto'=> $produto, 'unidades' => $unidades, 'fornecedores' => $fornecedores])
+            @component('app.produtos.produto_detalhe._components.form_create_edit',['produto_detalhe'=> $produto_detalhe, 'unidades' => $unidades])
 
             @endcomponent   
         </div>

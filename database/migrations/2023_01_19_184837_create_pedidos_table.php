@@ -13,15 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('produtos', function (Blueprint $table) {
+        Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
-            $table->string('nome', 100);
-            $table->string('descricao', 255)->nullable();
-            $table->float('peso')->nullable();
-            $table->float('preco_venda', 8, 2)->default(0.01);
-            $table->integer('estoque_minimo')->default(0);
-            $table->integer('estoque_maximo')->default(0);
+            $table->unsignedBigInteger('clientes_id');
             $table->timestamps();
+
+            $table->foreign('clientes_id')->references('id')->on('clientes');
         });
     }
 
@@ -31,7 +28,8 @@ return new class extends Migration
      * @return void
      */
     public function down()
-    {
-        Schema::dropIfExists('produtos');
+    {   
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('pedidos');
     }
 };

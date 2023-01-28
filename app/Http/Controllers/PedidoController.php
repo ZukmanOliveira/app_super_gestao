@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Clientes;
+use App\Models\Pedido;
 use Illuminate\Http\Request;
 
-class ClienteController extends Controller
+class PedidoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,10 +14,10 @@ class ClienteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {   
-        $clientes = Clientes::paginate(10);
-        
-        return view('app.clientes.index', ['clientes' => $clientes, 'request' => $request->all()]);
+    {
+        $pedido = Pedido::paginate(10);
+
+        return view('app.pedidos.index',['pedido' => $pedido, 'request' => $request->all()]);
     }
 
     /**
@@ -27,33 +28,28 @@ class ClienteController extends Controller
     public function create()
     {
         $clientes = Clientes::all();
-        return view('app.clientes.create', ['clientes' => $clientes]);
+        return view('app.pedidos.create',[ 'clientes' => $clientes ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+  
     public function store(Request $request)
     {
-       $cliente = [
-        'nome'=>'required| max:40 | min:5'
-       ];
+        $regras = [
+            'clientes_id' => 'exists:clientes,id'
+        ];
 
-       $feedback = [
-        'nome.required' => 'Informe Seu Nome Porfavor',
-        'noem.max' => 'Apenas 40 caracteres são permitidos',
-        'nome.min' => 'Precisa Ser maior ou igual a 5 caracteres'
-       ];
+        $feedback = [
+            'clientes_id.exists'=> 'cliente informado não existe'
+        ];
 
-       $request->validate($cliente,$feedback);
+        $request->validate($regras, $feedback);
 
-       $cliente = Clientes::create($request->all());
+        $pedido = new Pedido();
+        $pedido->clientes_id = $request->clientes_id;
+        $pedido->save();
 
-       return redirect()->route('cliente.index');
-    }
+        return redirect()->route('pedido.index');   
+        }
 
     /**
      * Display the specified resource.

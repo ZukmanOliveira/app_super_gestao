@@ -25,7 +25,9 @@
                         <th>Peso</th>
                         <th>Unidade</th>
                         <th>Detalhes</th>
-                        
+                        <th>comprimento</th>
+                        <th>altura</th>
+                        <th>largura</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,13 +35,38 @@
                         <tr>
                             <td>{{$produto->nome}}</td>
                             <td>{{$produto->descricao}}</td>
+                            <td>{{$produto->fornecedor->nome}}</td>
                             <td>{{$produto->peso}}</td>
                             <td>{{$produto->unidade_id}}</td>
-                            <td><a href="{{route('produto.show', ['produto' => $produto->id])}}">Visualizar</a></td>
-                            <td><a href="">Excluir</a></td>
+
+                            <!--Utilizando os atributos de produtoDetalhes atravez do relacionamento ORM-->
+                            <td>{{$produto->itemDetalhe->comprimento ?? ''}}</td>
+                            <td>{{$produto->itemDetalhe->altura ?? '' }}</td>
+                            <td>{{$produto->itemDetalhe->largura ?? '' }}</td>
+                            
+                            <td><a href="{{route('produto.show',['produto' => $produto->id])}}">Visualizar</a></td>
+
+                            <!--Deletar produtos, Utilizando metodo resource em rotas-->
+                            <form method="POST" action="{{route('produto.destroy', ['produto' => $produto])}}"  >
+                                @method('delete')
+                                <td><a href="{{route('produto.destroy',$produto->id)}}">Excluir</a></td>
+                            </form>
+
                             <td><a href="{{route('produto.edit',['produto' =>$produto->id])}}">Editar</td>
                         </tr>
+
+                        <tr>
+                            <td colspan="12">
+                                <p>Pedidos</p>
+                                @foreach($produto->pedidos as $pedido   )
+                                    <a href="{{route('pedido-produto.create',[ 'pedido' => $pedido ])}}">
+                                        Pedido: {{$pedido->id}}
+                                    </a>
+                                @endforeach
+                            </td>
+                        </tr>
                     @endforeach
+
                 </tbody>                
             </table>
 

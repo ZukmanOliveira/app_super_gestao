@@ -13,14 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('produtos', function (Blueprint $table) {
+        Schema::create('clientes', function (Blueprint $table) {
             $table->id();
-            $table->string('nome', 100);
-            $table->string('descricao', 255)->nullable();
-            $table->float('peso')->nullable();
-            $table->float('preco_venda', 8, 2)->default(0.01);
-            $table->integer('estoque_minimo')->default(0);
-            $table->integer('estoque_maximo')->default(0);
+            $table->string('nome', 50);
             $table->timestamps();
         });
     }
@@ -32,6 +27,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('produtos');
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('clientes');
     }
 };

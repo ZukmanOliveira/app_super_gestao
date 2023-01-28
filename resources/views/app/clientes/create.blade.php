@@ -3,7 +3,7 @@
 
     <div class="conteudo-pagina-adicionar">
         <div class="titulo-pagina">
-            @if(isset($produto->id))
+            @if(isset($cliente->id))
             <p>Editar Produto</p>
             @else
             <p>cadastrar Produto</p>
@@ -13,7 +13,7 @@
 
     <div class="menu">
         <ul>
-            <li><a href="{{route('produto.index')}}">Novo</a></li>
+            <li><a href="{{route('cliente.index')}}">Novo</a></li>
             <li><a href="">Consulta</a></li>
         </ul>
     </div>
@@ -21,9 +21,9 @@
     <div class="informação-pagina">
 
         <div style="width: 30%; margin-left: auto; margin-right: auto;"> 
-            @component('app.produtos._components.form_create_edit',['unidades' => $unidades, 'fornecedores' => $fornecedores])
-                
+            <!--Utilizando "component para importar o formulario que está em outro diretorio"-->
+            @component('app.clientes._components.form_create_edit', [ 'clientes' => $clientes ])
             @endcomponent
         </div>
-    </div>  
+    </div> 
 </div>

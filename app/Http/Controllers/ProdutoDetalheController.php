@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Clientes;
+use App\Models\ItemDetalhe;
+use App\Models\ProdutoDetalhe;
+use App\Models\Produtos;
+use App\Models\Unidade;
+use Illuminate\Cache\RedisTaggedCache;
 use Illuminate\Http\Request;
 
-class ClienteController extends Controller
+class ProdutoDetalheController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,10 +17,10 @@ class ClienteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {   
-        $clientes = Clientes::paginate(10);
-        
-        return view('app.clientes.index', ['clientes' => $clientes, 'request' => $request->all()]);
+    {
+        $produtoDetalhe = ProdutoDetalhe::all();
+
+        return (['app.produtos.index,',['produtoDetalhe'=>$produtoDetalhe]]);
     }
 
     /**
@@ -26,8 +30,10 @@ class ClienteController extends Controller
      */
     public function create()
     {
-        $clientes = Clientes::all();
-        return view('app.clientes.create', ['clientes' => $clientes]);
+     
+        $unidades = Unidade::all();
+     
+        return view('app.produtos.produto_detalhe.create',['unidades'=> $unidades]);
     }
 
     /**
@@ -38,21 +44,9 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
-       $cliente = [
-        'nome'=>'required| max:40 | min:5'
-       ];
-
-       $feedback = [
-        'nome.required' => 'Informe Seu Nome Porfavor',
-        'noem.max' => 'Apenas 40 caracteres são permitidos',
-        'nome.min' => 'Precisa Ser maior ou igual a 5 caracteres'
-       ];
-
-       $request->validate($cliente,$feedback);
-
-       $cliente = Clientes::create($request->all());
-
-       return redirect()->route('cliente.index');
+        ProdutoDetalhe::create($request->all());
+        
+        //return redirect()->route('app.produtos.produto_detalhe.create');
     }
 
     /**
@@ -74,7 +68,11 @@ class ClienteController extends Controller
      */
     public function edit($id)
     {
-        //
+        $produtoDetalhe = ItemDetalhe::find($id);
+
+        $unidades = Unidade::all();
+
+        return view('app.produtos.produto_detalhe.edit',['produto_detalhe'=> $produtoDetalhe, 'unidades'=>$unidades]);
     }
 
     /**
@@ -84,9 +82,10 @@ class ClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, ProdutoDetalhe $produtoDetalhe)
     {
-        //
+        $produtoDetalhe->update($request->all());
+        echo'Alteração realizada com secesso';
     }
 
     /**

@@ -11,9 +11,13 @@ use App\Http\Controllers\PrincipalController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\FornecedorController;
+use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\PedidoProdutoController;
 use App\Http\Controllers\ProdutoController;
+use App\Http\Controllers\ProdutoDetalheController;
+use App\Http\Controllers\Teste;
 use App\Http\Middleware\LogAcessoMiddleware;
-use App\Models\Fornecedor;
+use App\Models\PedidoProdutos;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,7 +38,7 @@ Route::get('/contato',[ContatoController::class,'create'])->name('site.create');
 
 Route::get('/login/{erro?}',[LoginController::class,'create'])->name('login.create');
 Route::post('/login',[LoginController::class,'store'])->name('login.store');
-
+Route::get('/teste',[Teste::class],'teste')->name('Teste.index');
 /**refatorando as rotas */
 
 
@@ -61,4 +65,15 @@ Route::middleware('autenticacao')->prefix('/app')->group(function(){
     
     /**Produto */
     Route::resource('produto',ProdutoController::class);
+    Route::resource('cliente',ClienteController::class);
+    Route::resource('pedido',PedidoController::class);
+
+    Route::get('pedido-produto/create/{pedido}',[PedidoProdutoController::class,'create'])->name('pedido-produto.create');
+    Route::post('pedido-produto/store/{pedido}',[PedidoProdutoController::class,'store'])->name('pedido-produto.store');
+    Route::delete('pedido-produto/destroy/{pedido}/{produto}', [PedidoProdutosController::class,'destroy'])->name('pedido-produto.destroy');
+
+    /**Produtos Detalhes */
+    Route::resource('produto-detalhes',ProdutoDetalheController::class);
+    
+
 });

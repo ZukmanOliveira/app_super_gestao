@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Clientes;
+use App\Models\Pedido;
+use App\Models\PedidoProdutos;
+use App\Models\Produtos;
 use Illuminate\Http\Request;
 
-class ClienteController extends Controller
+class PedidoProdutoController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {   
-        $clientes = Clientes::paginate(10);
-        
-        return view('app.clientes.index', ['clientes' => $clientes, 'request' => $request->all()]);
+    public function index()
+    {
+        //
     }
 
     /**
@@ -24,10 +24,11 @@ class ClienteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Pedido $pedido)
     {
-        $clientes = Clientes::all();
-        return view('app.clientes.create', ['clientes' => $clientes]);
+        $produtos = Produtos::all();
+     
+        return view('app.pedido-produto.create',['pedido' => $pedido, 'produtos'=> $produtos]);
     }
 
     /**
@@ -36,25 +37,33 @@ class ClienteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-       $cliente = [
-        'nome'=>'required| max:40 | min:5'
-       ];
+    public function store(Request $request, Pedido $pedido)
+    {       
+       
+        $regras = [
+            'produtos_id' =>'exists:produtos,id',
+        
+        ];
 
-       $feedback = [
-        'nome.required' => 'Informe Seu Nome Porfavor',
-        'noem.max' => 'Apenas 40 caracteres são permitidos',
-        'nome.min' => 'Precisa Ser maior ou igual a 5 caracteres'
-       ];
+        $feedback = [
+            'produtos_id.exists' => 'Porfavor selecione um produto'
+        ];
 
-       $request->validate($cliente,$feedback);
+        $request->validate($regras, $feedback);
+        /*
+        $pedidoProdutos = new PedidoProdutos();
+        $pedidoProdutos->pedidos_id = $pedido->id;
+        $pedidoProdutos->produtos_id = $request->get('produtos_id');
+        $pedidoProdutos->save();
+        */
+        
+        $pedido->produtos()->attach(
+            $request->get('produtos_id'),
+            ['quantidade' => $request->get('quantidade')]
+        );
 
-       $cliente = Clientes::create($request->all());
-
-       return redirect()->route('cliente.index');
+        return redirect()->route('pedido-produto.create',['pedido' => $pedido]);
     }
-
     /**
      * Display the specified resource.
      *
@@ -63,7 +72,7 @@ class ClienteController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**

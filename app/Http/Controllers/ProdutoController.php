@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fornecedor;
+use App\Models\Item;
 use App\Models\Produtos;
 use App\Models\Unidade;
 use Illuminate\Http\Request;
@@ -15,10 +17,9 @@ class ProdutoController extends Controller
      */
     public function index(Request $request)
     {
-       $produtos = Produtos::paginate(10);
+       $produtos = Item::paginate(10);
 
-        return view('app.produtos.index',['produtos' => $produtos, 'request' => $request->all()]);
-        
+        return view('app.produtos.index', ['produtos' => $produtos, 'request' => $request->all()]);
     }
 
     /**
@@ -28,8 +29,9 @@ class ProdutoController extends Controller
      */
     public function create()
     {
+        $fornecedores = Fornecedor::all();
         $unidades = Unidade::all();
-        return view('app.produtos.create',['unidades' => $unidades]);
+        return view('app.produtos.create',['unidades' => $unidades, 'fornecedores'=> $fornecedores]);
     }
 
     /**
@@ -41,10 +43,11 @@ class ProdutoController extends Controller
     public function store(Request $request)
     {
         /**Mensagem para validação */
+        
        $regras = [
             'nome'=>'required|min:3|max:48',
-            'descricao' => 'required|min:3|max2000',
-            'peso' =>'required|min:4',
+            'descricao' => 'required|min:1|max:255',
+            'peso' =>'required|min:1',
             'unidade_id' =>'exists:unidades,id',
        ];
 
@@ -87,7 +90,8 @@ class ProdutoController extends Controller
     public function edit(Produtos $produto)
     {
         $unidades = Unidade::all();
-        return view('app.produtos.edit',['produto' => $produto, 'unidades' => $unidades ]);
+        $fornecedores = Fornecedor::all();
+        return view('app.produtos.edit',['produto' => $produto, 'unidades' => $unidades, 'fornecedores' => $fornecedores]);
     }
 
     /**
@@ -100,9 +104,9 @@ class ProdutoController extends Controller
     public function update(Request $request,Produtos $produto)
     {   
         $produto->update($request->all());
-        dd($produto);
+        
 
-        return redirect()->route( 'route.show', [ 'produto' => $produto->id ]);
+        return redirect()->route( 'produto.show', [ 'produto' => $produto->id ]);
     }
 
     /**
@@ -111,8 +115,12 @@ class ProdutoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $id)
-    {
-        //
+    public function destroy(Produtos $produto)
+    {   
+        dd($produto);
+
+        $produto->delete($produto->id);
+
+        return redirect()->route('produto.index',['produto'=>$produto->id]);
     }
 }
